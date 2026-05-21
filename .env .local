@@ -1,0 +1,12 @@
+# Copy to .env.local and fill in values from your Supabase project dashboard.
+# Project Settings → API → URL & anon key.
+
+NEXT_PUBLIC_SUPABASE_URL="https://rufjvtptnehrzvdbcbgt.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="sb_publishable_JGaIF32ZdbFzDv7-F9D7Fg_Y2VhycWT"
+
+# Server-only (used by route handlers / server actions for privileged ops).
+# DO NOT prefix with NEXT_PUBLIC_.
+SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
+
+# Optional: enable analytics / monitoring
+NEXT_PUBLIC_APP_URL="http://localhost:3000"

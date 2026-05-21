@@ -1,0 +1,7 @@
+.next
+node_modules
+public
+legacy
+*.lock
+package-lock.json
+pnpm-lock.yaml
