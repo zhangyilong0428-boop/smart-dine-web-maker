@@ -1,3 +1,4 @@
+export const runtime = "edge";
 import { Suspense } from "react";
 
 import { BestSellers } from "@/components/menu/best-sellers";
