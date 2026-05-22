@@ -24,12 +24,14 @@ export interface Item {
   name: string;
   description: string | null;
 
-  // 改这里
   price: number;
   image: string | null;
 
   tags: string[];
   sold_count: number;
+
+  // 加这里
+  rating: number;
 
   is_available: boolean;
   is_featured: boolean;
