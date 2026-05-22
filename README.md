@@ -135,40 +135,6 @@ supabase/
 
 ---
 
-## 面试官常问 / 怎么答
-
-**Q1. 为什么是 Next.js App Router 而不是 Vite + React?**
-> App Router 把 RSC + Server Actions + 流式渲染原生集成进路由层。我们的菜单页需要 SEO + 动态元数据 + 边缘缓存，这些在纯客户端方案里要自己拼。RSC 还让我把 Supabase 的服务端调用直接放在组件里，不用造 API 路由。
-
-**Q2. 状态管理为什么是 Zustand 而不是 Redux/Jotai?**
-> 购物车是高频写入但作用域窄的全局态，Zustand 用 50 行就解决问题，不需要 reducer/action 模板。同时把"远端数据"交给 React Query，本地态和远端态分离，是当前社区的最佳实践。
-
-**Q3. 实时推送怎么做的？为什么不用轮询?**
-> Supabase Realtime 基于 Postgres 的 WAL 改成 WebSocket。我订阅 `orders.id=eq.<uuid>`，服务端 `update orders set status=...` 时客户端直接收到推送，延迟 ~ 100-500ms。轮询的代价是 N 个客户端 × 每秒一次请求，对小餐厅没问题，对扩展不友好。
-
-**Q4. SKU 多规格价格怎么联动?**
-> 单价 = 基础价 + 所有已选 option 的 price_delta 累加。我把它写成 `useMemo`，依赖 `[item, selection]`；选中状态用 `Record<groupId, optionId[]>` 表示，必选用 radio 语义、可选用 checkbox 语义，全部由 `is_required` 字段驱动 UI 行为。
-
-**Q5. 全文搜索如何实现?**
-> 在 `items` 表上建一个 `tsvector` 生成列，权重 A/B/C 分给 name/description/tags，配 GIN 索引。前端 220ms 防抖 + 服务端 `textSearch('search_vec', q, { type: 'websearch' })`。客户端同时做即时过滤兜底用户感知。
-
-**Q6. 个性化推荐是真的还是假的?**
-> 是基于规则的协同推荐，不是 LLM。RPC `recommended_items()` 取用户历史订单的品类，回查热销前 N；冷启动用户回落到全局热销。这是面试里"诚实但有想法"的写法 —— 一上来就吹 AI 推荐反而扣分。
-
-**Q7. RLS 是什么? 为什么不在应用层做权限?**
-> Row-Level Security 把权限从应用层下沉到数据库层。我写的策略 `auth.uid() = user_id` 保证即使应用代码出 bug，用户也读不到别人的订单。这种"安全是默认开"的思路适合多租户场景。
-
-**Q8. 性能上你做了什么?**
-> 7 件事：(1) RSC + ISR 60s 让菜单页冷启动 TTFB 在边缘解决；(2) `next/image` 自动 AVIF/WebP，菜单卡片首屏标 priority；(3) 路由级 `loading.tsx` 走 Suspense 流式；(4) 搜索 220ms 防抖；(5) `optimizePackageImports` 砍 lucide / framer 的 tree-shake；(6) Zustand persist 让购物车跨刷新无闪烁；(7) PWA 缓存静态资源。
-
-**Q9. 工程化你最在意什么?**
-> 是否能在不写一行代码的情况下被新人安全地改坏。我的判据是：pre-commit 跑 lint-staged + commit-msg 跑 commitlint + CI 跑 lint/typecheck/build —— 这三道闸至少一道挡得住每一种典型错误。
-
-**Q10. 你怎么避免代码腐烂?**
-> 类型驱动：`Database` 里的 schema 是单一真相源，组件 props 顺着类型推导。第二是模块边界，`lib/api/menu.ts` 屏蔽了 mock vs Supabase 的差异，业务层完全不感知。
-
----
-
 ## 本地启动
 
 ```bash
@@ -188,27 +154,3 @@ npm run dev
 
 # 没配 Supabase 也能直接跑 — API 层会自动回落到本地 mock 数据。
 ```
-
----
-
-## Roadmap (诚实标注，不混淆"已实现"与"计划中")
-
-下面这些功能是在本次会话里**有意识舍弃的**，不是我没想到，而是为了避免把项目做成"什么都有但没一项做透"的展品：
-
-- [ ] LLM 驱动的智能点单（接 Claude/OpenAI，basket → 推荐补单）
-- [ ] Stripe 真实支付通道（当前为"模拟支付"）
-- [ ] 商家端 (Admin) 后台：订单看板、菜品上下架
-- [ ] 单元测试 (Vitest) + E2E (Playwright)，CI 加测试 job
-- [ ] 国际化 (next-intl)，目前只有中文 dict
-- [ ] 优惠券 / 积分系统（schema 已留扩展空间）
-- [ ] OpenTelemetry 链路追踪 + Sentry 错误监控
-- [ ] Docker / docker-compose 一键起本地开发栈
-- [ ] 虚拟列表（菜单超过 200 项时启用 react-virtual）
-
-> 在简历里诚实地把"已做"和"规划"分开，比把所有项目都吹成"已完成"更让面试官信任。
-
----
-
-## 许可证
-
-MIT — 项目代码可自由复用为简历项目或学习项目。
