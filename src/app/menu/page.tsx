@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 // 2. 导入所有需要的模块
 import { Suspense } from "react";
 import { BestSellers } from "@/components/menu/best-sellers";
