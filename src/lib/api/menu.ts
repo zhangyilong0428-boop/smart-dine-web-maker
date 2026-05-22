@@ -40,6 +40,8 @@ export async function listItems(params?: {
   }
 
   const { data, error } = await q;
+  console.log("MENU DATA =", data);
+  console.log("MENU ERROR =", error);
 
   if (error) {
     console.error(error);
