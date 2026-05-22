@@ -21,8 +21,8 @@ create table if not exists items (
     category_id     uuid not null references categories(id) on delete restrict,
     name            text not null,
     description     text,
-    base_price      numeric(10,2) not null check (base_price >= 0),
-    image_url       text,
+    price      numeric(10,2) not null check (price >= 0),
+    image       text,
     tags            text[] default '{}',
     -- denormalized counters that power "热销" without a heavy aggregate
     sold_count      int not null default 0,

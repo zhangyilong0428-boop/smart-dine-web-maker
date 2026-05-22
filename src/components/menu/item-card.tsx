@@ -30,8 +30,8 @@ export function ItemCard({ item, priority }: ItemCardProps) {
       key: item.id,
       itemId: item.id,
       name: item.name,
-      imageUrl: item.image_url,
-      unitPrice: item.base_price,
+      imageUrl: item.image,
+      unitPrice: item.price,
     });
     openCart(true);
   }
@@ -50,9 +50,9 @@ export function ItemCard({ item, priority }: ItemCardProps) {
         className="block overflow-hidden rounded-3xl border border-border/60 bg-card/70 backdrop-blur transition-shadow hover:shadow-[0_24px_60px_-24px_hsl(var(--primary)/0.35)]"
       >
         <div className="relative aspect-[4/3] overflow-hidden">
-          {item.image_url ? (
+          {item.image ? (
             <Image
-              src={item.image_url}
+              src={item.image}
               alt={item.name}
               fill
               priority={priority}
@@ -91,7 +91,7 @@ export function ItemCard({ item, priority }: ItemCardProps) {
             )}
             <div className="mt-2 flex items-baseline gap-1">
               <span className="font-display text-lg font-bold">
-                {formatPrice(item.base_price)}
+                {formatPrice(item.price)}
               </span>
               <span className="text-xs text-muted-foreground">
                 · 已售 {item.sold_count.toLocaleString()}

@@ -62,7 +62,7 @@
 
 ### Q4 — SKU 多规格价格怎么联动?
 
-> 数据库层：`item_option_groups + item_options` 双表，每个 option 有 `price_delta`。前端用 `Record<groupId, optionId[]>` 表示选中状态，必选用 radio 语义、可选用 checkbox 语义，全部由 `is_required` 字段驱动 UI 行为。`unitPrice = base_price + Σ price_delta` 写成 `useMemo`，依赖 `[item, selection]`。
+> 数据库层：`item_option_groups + item_options` 双表，每个 option 有 `price_delta`。前端用 `Record<groupId, optionId[]>` 表示选中状态，必选用 radio 语义、可选用 checkbox 语义，全部由 `is_required` 字段驱动 UI 行为。`unitPrice = price + Σ price_delta` 写成 `useMemo`，依赖 `[item, selection]`。
 
 ### Q5 — 全文搜索如何实现?
 

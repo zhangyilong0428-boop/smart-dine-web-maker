@@ -116,7 +116,7 @@ export function AiDemo() {
               </div>
               <div className="text-right">
                 <p className="font-display text-sm font-semibold text-primary">
-                  {formatPrice(r.item.base_price)}
+                  {formatPrice(r.item.price)}
                 </p>
                 <ScoreBar score={r.score} />
               </div>

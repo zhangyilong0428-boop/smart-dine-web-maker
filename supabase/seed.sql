@@ -13,8 +13,8 @@ insert into categories (slug, name, sort_order) values
 on conflict (slug) do nothing;
 
 -- Items --------------------------------------------------------------------
-insert into items (category_id, name, description, base_price, image_url, tags, sold_count, rating, is_featured)
-select c.id, x.name, x.description, x.base_price, x.image_url, x.tags, x.sold_count, x.rating, x.is_featured
+insert into items (category_id, name, description, price, image, tags, sold_count, rating, is_featured)
+select c.id, x.name, x.description, x.price, x.image, x.tags, x.sold_count, x.rating, x.is_featured
 from categories c
 join (values
     -- signature
@@ -33,7 +33,7 @@ join (values
     -- dessert
     ('dessert',   '咸蛋黄熔岩可丽露',  '法式可丽露 · 流心咸蛋黄',            22.00,  'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=900&q=80', array['甜点','网红'],         1980, 4.8, false),
     ('dessert',   '抹茶巴斯克',        '宇治抹茶 · 烤布蕾质地',              28.00,  'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=900&q=80', array['甜点','抹茶'],         1640, 4.8, false)
-) as x(cat_slug, name, description, base_price, image_url, tags, sold_count, rating, is_featured)
+) as x(cat_slug, name, description, price, image, tags, sold_count, rating, is_featured)
   on c.slug = x.cat_slug
 where not exists (select 1 from items i where i.name = x.name);
 

@@ -54,7 +54,7 @@ export function ItemDetail({ item }: ItemDetailProps) {
       }
     }
     return {
-      unitPrice: item.base_price + delta,
+      unitPrice: item.price + delta,
       summary: parts.join(" / "),
     };
   }, [item, selection]);
@@ -86,7 +86,7 @@ export function ItemDetail({ item }: ItemDetailProps) {
         key: `${item.id}::${optionPart}`,
         itemId: item.id,
         name: item.name,
-        imageUrl: item.image_url,
+        imageUrl: item.image,
         unitPrice,
         optionsSummary: summary || undefined,
       },
@@ -110,9 +110,9 @@ export function ItemDetail({ item }: ItemDetailProps) {
           layoutId={`hero-${item.id}`}
           className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-border/60"
         >
-          {item.image_url && (
+          {item.image && (
             <Image
-              src={item.image_url}
+              src={item.image}
               alt={item.name}
               fill
               priority
@@ -152,9 +152,7 @@ export function ItemDetail({ item }: ItemDetailProps) {
                 return (
                   <div key={g.id}>
                     <div className="mb-2 flex items-center gap-2">
-                      <h3 className="font-display text-sm font-semibold">
-                        {g.name}
-                      </h3>
+                      <h3 className="font-display text-sm font-semibold">{g.name}</h3>
                       {g.is_required ? (
                         <Badge variant="secondary">必选</Badge>
                       ) : (

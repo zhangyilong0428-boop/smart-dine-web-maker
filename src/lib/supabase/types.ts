@@ -23,11 +23,14 @@ export interface Item {
   category_id: string;
   name: string;
   description: string | null;
-  base_price: number;
-  image_url: string | null;
+
+  // 改这里
+  price: number;
+  image: string | null;
+
   tags: string[];
   sold_count: number;
-  rating: number;
+
   is_available: boolean;
   is_featured: boolean;
 }
@@ -79,14 +82,22 @@ export interface OrderItem {
 export interface Database {
   public: {
     Tables: {
-      categories: { Row: Category; Insert: Partial<Category>; Update: Partial<Category> };
+      categories: {
+        Row: Category;
+        Insert: Partial<Category>;
+        Update: Partial<Category>;
+      };
       items: { Row: Item; Insert: Partial<Item>; Update: Partial<Item> };
       item_option_groups: {
         Row: Omit<ItemOptionGroup, "options">;
         Insert: Partial<Omit<ItemOptionGroup, "options">>;
         Update: Partial<Omit<ItemOptionGroup, "options">>;
       };
-      item_options: { Row: ItemOption; Insert: Partial<ItemOption>; Update: Partial<ItemOption> };
+      item_options: {
+        Row: ItemOption;
+        Insert: Partial<ItemOption>;
+        Update: Partial<ItemOption>;
+      };
       orders: {
         Row: Order;
         Insert: Pick<Order, "user_id" | "subtotal" | "discount" | "total"> & {

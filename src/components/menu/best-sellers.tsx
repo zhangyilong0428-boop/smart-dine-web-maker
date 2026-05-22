@@ -41,9 +41,9 @@ export function BestSellers({ items }: BestSellersProps) {
               #{idx + 1}
             </span>
             <div className="relative size-14 shrink-0 overflow-hidden rounded-xl">
-              {item.image_url && (
+              {item.image && (
                 <Image
-                  src={item.image_url}
+                  src={item.image}
                   alt=""
                   fill
                   sizes="56px"
@@ -59,7 +59,7 @@ export function BestSellers({ items }: BestSellersProps) {
                 <span>· {item.sold_count.toLocaleString()} 份</span>
               </p>
               <p className="mt-0.5 font-display text-sm font-bold text-primary">
-                {formatPrice(item.base_price)}
+                {formatPrice(item.price)}
               </p>
             </div>
           </Link>
