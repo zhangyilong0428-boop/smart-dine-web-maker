@@ -1,10 +1,7 @@
-export const runtime = "edge";
 import { notFound } from "next/navigation";
 
 import { getItem } from "@/lib/api/menu";
 import { ItemDetail } from "@/components/menu/item-detail";
-
-export const revalidate = 60;
 
 interface Params {
   params: { id: string };

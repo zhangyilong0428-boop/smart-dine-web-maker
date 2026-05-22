@@ -1,6 +1,3 @@
-// 1. 文件最顶部：先写运行时声明
-export const runtime = "edge";
-
 // 2. 导入所有需要的模块
 import { Suspense } from "react";
 import { BestSellers } from "@/components/menu/best-sellers";
