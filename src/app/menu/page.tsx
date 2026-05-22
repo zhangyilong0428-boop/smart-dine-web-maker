@@ -1,7 +1,7 @@
 // 1. 文件最顶部：先写运行时声明
 export const runtime = "edge";
 
-// 2. 然后是所有导入（注意：服务端组件不能直接用 useState/useEffect）
+// 2. 导入所有需要的模块
 import { Suspense } from "react";
 import { BestSellers } from "@/components/menu/best-sellers";
 import { MenuGrid } from "@/components/menu/menu-grid";
@@ -14,8 +14,8 @@ export const metadata = {
   description: "Yilong 主厨菜单 · 实时库存 · 个性化推荐",
 };
 
-// 3. 服务端数据组件（纯服务端逻辑，不能用 'use client'）
-async function MenuData() {
+// 3. 数据组件：获取菜单数据（服务端组件）
+async function MenuContent() {
   const [categories, items, top] = await Promise.all([
     listCategories(),
     listItems(),
@@ -37,26 +37,11 @@ async function MenuData() {
   );
 }
 
-// 4. 客户端组件：必须单独声明 'use client'，放在文件的最前面或单独文件
-("use client");
-import { useState, useEffect } from "react";
+// 4. 主页面组件：必须是 async 函数，提前获取 items 数据
+export default async function MenuPage() {
+  // 提前获取 items 数据，用于显示商品数量
+  const items = await listItems();
 
-function ClientItemCount() {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    // 这里先简化，直接调用 listItems 接口获取数量
-    fetch("/api/menu/items-count")
-      .then((res) => res.json())
-      .then((data) => setCount(data.count || 0))
-      .catch(() => setCount(0));
-  }, []);
-
-  return <>{count}</>;
-}
-
-// 5. 主页面组件（服务端组件，只渲染骨架和 Suspense）
-export default function MenuPage() {
   return (
     <div className="container space-y-10">
       <header className="space-y-2 pt-2">
@@ -68,15 +53,14 @@ export default function MenuPage() {
         </h1>
         <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
           懂工出好味，一秒下单，三分钟上桌，当前展示{" "}
-          <span className="font-semibold text-foreground">
-            <ClientItemCount />
-          </span>{" "}
+          <span className="font-semibold text-foreground">{items.length}</span>{" "}
           道菜品，按热销与个性化偏好动态排序。
         </p>
       </header>
 
+      {/* 用 Suspense 包裹数据组件，显示加载状态 */}
       <Suspense fallback={<Skeleton className="h-96 w-full rounded-xl" />}>
-        <MenuData />
+        <MenuContent />
       </Suspense>
     </div>
   );
