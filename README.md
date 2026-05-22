@@ -96,7 +96,7 @@ supabase/
 
 ---
 
-## 项目亮点（写进简历的版本）
+## 项目亮点
 
 1. **设计系统驱动 UI**：CSS variables + Tailwind theme，主题切换 0 重渲染；自建 shadcn 风格组件库，bundle 可控
 2. **真实时数据流**：Supabase Realtime（WebSocket）订阅 `orders.id`，订单状态从`待支付 → 已支付 → 制作中 → 取餐 → 完成`端到端无刷新推送
@@ -108,30 +108,6 @@ supabase/
 8. **PWA**：next-pwa + Web App Manifest，移动端可安装；菜单页静态化 + ISR 60s
 9. **流式 SSR**：`loading.tsx` + `<Suspense>` 实现路由级骨架屏，FCP 可观察的渐进显示
 10. **完整工程链**：ESLint / Prettier / Husky / commitlint / GitHub Actions（lint + typecheck + build），pre-commit lint-staged
-
----
-
-## STAR 简历描述
-
-> **Situation**: 餐厅业务方需要一套能替代第三方平台（美团 / 饿了么）的自有点餐 Web 应用，要求 SaaS 级 UI 与品牌一致性，并在移动端达到原生级体验。
->
-> **Task**: 独立设计并实现整个前端架构与核心业务流程；负责技术选型、设计系统、数据建模、实时订单与性能优化。
->
-> **Action**:
-> - 选型 **Next.js 14 App Router + RSC** 替代传统 SPA，菜单页通过 ISR 60s 边缘缓存，TTFB ↓ 60%；
-> - 自建基于 CSS 变量的设计系统，零运行时开销实现 Light/Dark 双主题；用 Framer Motion 完成共享元素转场与 Drawer 弹簧动画；
-> - 后端用 **Supabase**：自定义 `tsvector` 全文搜索、`RPC` 协同推荐、`Realtime` 订阅完成订单状态机的端到端实时推送；
-> - **Server Actions + Zod** 完成下单流程，RLS 在数据库层保证用户只读写自己的订单；
-> - 工程化：**ESLint + Prettier + Husky + commitlint + GitHub Actions** 完整流水线，pre-commit lint-staged，CI 跑 lint/typecheck/build；
-> - 性能优化：**TanStack Query 缓存 + 220ms 搜索防抖 + next/image 自动 AVIF/WebP + 路由级流式 Suspense + PWA**。
->
-> **Result**:
-> - Lighthouse 移动端 Performance/Best Practices/SEO/Accessibility ≥ 90 (本地 Lighthouse CI)；
-> - First Load JS < 130KB（产品骨架），无第三方 UI 库依赖；
-> - 端到端订单状态推送延迟 < 800ms；
-> - 项目从冷启动到能独立部署到 Vercel + Supabase 全程文档化，可直接演示。
-
-> 数字按你部署后的真实数据替换 — 上面是合理目标范围，不是虚报。
 
 ---
 
