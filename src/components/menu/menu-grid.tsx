@@ -33,7 +33,7 @@ export function MenuGrid({ categories, items, loading }: MenuGridProps) {
       return (
         i.name.toLowerCase().includes(q) ||
         (i.description ?? "").toLowerCase().includes(q) ||
-        i.tags.some((t) => t.toLowerCase().includes(q))
+        (i.tags ?? []).some((t) => t.toLowerCase().includes(q))
       );
     });
   }, [items, activeId, debounced]);

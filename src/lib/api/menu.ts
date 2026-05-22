@@ -1,11 +1,5 @@
 import { isSupabaseConfigured } from "@/lib/supabase/env";
-import type {
-  Category,
-  Item,
-  ItemOption,
-  ItemOptionGroup,
-  ItemWithOptions,
-} from "@/lib/supabase/types";
+import type { Category, Item, ItemWithOptions } from "@/lib/supabase/types";
 
 import { mockCategories, mockItemWithOptions, mockItems } from "./mock-data";
 
@@ -49,14 +43,14 @@ export async function listItems(params?: {
         (i) =>
           i.name.toLowerCase().includes(q) ||
           (i.description ?? "").toLowerCase().includes(q) ||
-          i.tags.some((t) => t.toLowerCase().includes(q)),
+          (i.tags ?? []).some((t) => t.toLowerCase().includes(q)),
       );
     }
     return rows;
   }
 
   const supabase = await getServer();
-  let q = supabase.from("items").select("*").eq("is_available", true);
+  let q = supabase.from("dishes").select("*").eq("is_available", true);
   if (params?.categoryId) q = q.eq("category_id", params.categoryId);
   if (params?.search) {
     // Postgres full-text — uses the `search_vec` GIN index from schema.sql
@@ -71,37 +65,19 @@ export async function getItem(id: string): Promise<ItemWithOptions | null> {
   if (!isSupabaseConfigured) return mockItemWithOptions(id);
 
   const supabase = await getServer();
-  const [{ data: item, error: e1 }, { data: groups, error: e2 }] =
-    await Promise.all([
-      supabase.from("items").select("*").eq("id", id).single(),
-      supabase
-        .from("item_option_groups")
-        .select("*")
-        .eq("item_id", id)
-        .order("sort_order"),
-    ]);
-  if (e1 || !item) return null;
-  if (e2) throw e2;
 
-  const groupIds = (groups ?? []).map((g) => g.id);
-  let options: ItemOption[] = [];
-  if (groupIds.length) {
-    const { data, error } = await supabase
-      .from("item_options")
-      .select("*")
-      .in("group_id", groupIds)
-      .order("sort_order");
-    if (error) throw error;
-    options = data ?? [];
-  }
+  const { data, error } = await supabase
+    .from("dishes")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) return null;
 
   return {
-    ...item,
-    option_groups: (groups ?? []).map((g) => ({
-      ...(g as ItemOptionGroup),
-      options: options.filter((o) => o.group_id === g.id),
-    })),
-  };
+    ...data,
+    option_groups: [],
+  } as ItemWithOptions;
 }
 
 export async function bestSellers(limit = 6): Promise<Item[]> {
