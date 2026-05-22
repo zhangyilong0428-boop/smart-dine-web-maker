@@ -2,15 +2,16 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
 import { supabaseEnv } from "./env";
-import type { Database } from "./types";
 
 /**
  * Server Supabase client — re-created per request so it binds to that
  * request's cookie jar. Do not memoize.
+ *
+ * `<Database>` generic is intentionally omitted; see `./client.ts` for context.
  */
 export function getSupabaseServer() {
   const store = cookies();
-  return createServerClient<Database>(supabaseEnv.url, supabaseEnv.anonKey, {
+  return createServerClient(supabaseEnv.url, supabaseEnv.anonKey, {
     cookies: {
       get(name: string) {
         return store.get(name)?.value;

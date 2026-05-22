@@ -3,16 +3,17 @@
 import { createBrowserClient } from "@supabase/ssr";
 
 import { supabaseEnv } from "./env";
-import type { Database } from "./types";
 
-let cached: ReturnType<typeof createBrowserClient<Database>> | null = null;
+let cached: ReturnType<typeof createBrowserClient> | null = null;
 
 /**
  * Browser Supabase client — singleton, reused across the SPA shell.
- * Keep auth state in cookies (via @supabase/ssr) so server components see it too.
+ * We deliberately skip the `<Database>` generic: hand-written row types live
+ * in `./types.ts` and are applied at the call site, which keeps the inference
+ * surface predictable without committing to `supabase gen types` in CI.
  */
 export function getSupabaseBrowser() {
   if (cached) return cached;
-  cached = createBrowserClient<Database>(supabaseEnv.url, supabaseEnv.anonKey);
+  cached = createBrowserClient(supabaseEnv.url, supabaseEnv.anonKey);
   return cached;
 }

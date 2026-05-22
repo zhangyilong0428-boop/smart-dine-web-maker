@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Manrope } from "next/font/google";
 
 import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 
 import { Providers } from "./providers";
@@ -22,17 +23,25 @@ const display = Manrope({
 
 export const metadata: Metadata = {
   title: {
-    default: "Dine — 智能点餐",
-    template: "%s · Dine",
+    default: "Yilong — 重新定义点餐体验",
+    template: "%s · Yilong",
   },
   description:
-    "现代化智能点餐体验。设计系统驱动的 UI、Supabase 实时订单、Next.js 14 App Router、PWA 离线可用。",
-  keywords: ["点餐", "餐厅", "设计系统", "Next.js", "Supabase"],
+    "Yilong 是一套面向现代餐饮的智能点单操作系统：Aurora 设计语言、实时订单同步、AI 个性化推荐，由独立开发者张艺泷打造。",
+  keywords: ["Yilong", "智能点餐", "餐厅 SaaS", "Next.js", "Supabase", "张艺泷"],
+  authors: [{ name: "张艺泷", url: "https://github.com/zhangyilong5" }],
+  creator: "张艺泷",
   manifest: "/manifest.webmanifest",
   openGraph: {
-    title: "Dine — 智能点餐",
-    description: "现代化智能点餐体验",
+    title: "Yilong — 重新定义点餐体验",
+    description: "Aurora 设计语言 · 实时订单同步 · AI 个性化推荐",
     type: "website",
+    siteName: "Yilong",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Yilong — 重新定义点餐体验",
+    description: "Aurora 设计语言 · 实时订单同步 · AI 个性化推荐",
   },
 };
 
@@ -46,19 +55,16 @@ export const viewport: Viewport = {
   maximumScale: 5,
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh-CN" suppressHydrationWarning>
       <body
-        className={`${sans.variable} ${display.variable} bg-background bg-mesh-light dark:bg-mesh-dark min-h-dvh`}
+        className={`${sans.variable} ${display.variable} relative min-h-dvh bg-background`}
       >
         <Providers>
           <Navbar />
           <main className="pb-24 pt-20">{children}</main>
+          <Footer />
           <CartDrawer />
         </Providers>
       </body>

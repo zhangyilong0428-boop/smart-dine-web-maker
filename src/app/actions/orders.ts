@@ -51,7 +51,7 @@ export async function placeOrder(input: unknown): Promise<PlaceOrderResult> {
   const { data: order, error } = await supabase
     .from("orders")
     .insert({
-      user_id: userId,
+      //user_id: userId,
       subtotal,
       discount: 0,
       total: subtotal,
@@ -103,7 +103,7 @@ export async function advanceOrder(orderId: string): Promise<PlaceOrderResult> {
     completed: null,
     cancelled: null,
   };
-  const next = transitions[cur.status];
+  const next = transitions[cur.status as OrderStatus];
   if (!next) return { ok: true, orderId };
 
   const { error } = await supabase

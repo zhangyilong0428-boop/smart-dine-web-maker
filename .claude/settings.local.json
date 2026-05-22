@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "Bash(npx next *)",
+      "Bash(curl -s -o D:/dine/.dev-html.txt -w \"status=%{http_code} size=%{size_download}\\\\n\" http://localhost:3000/)",
+      "Bash(grep *)",
+      "Bash(curl -s -o D:/dine/.dev-html.txt http://localhost:3000/)",
+      "PowerShell(Get-Process *)"
+    ]
+  }
+}
