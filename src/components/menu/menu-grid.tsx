@@ -28,7 +28,10 @@ export function MenuGrid({ categories, items, loading }: MenuGridProps) {
   const filtered = useMemo(() => {
     const q = debounced.trim().toLowerCase();
     return items.filter((i) => {
-      if (activeId && i.category_id !== activeId) return false;
+      return (
+        i.name.toLowerCase().includes(q) ||
+        (i.description ?? "").toLowerCase().includes(q)
+      );
       if (!q) return true;
       return (
         i.name.toLowerCase().includes(q) ||
